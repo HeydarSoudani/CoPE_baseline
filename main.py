@@ -123,6 +123,7 @@ parser.add_argument('--change_th', type=float, default=0.0,
 
 
 # I added
+parser.add_argument('--dataset', type=str, default='mnist', help='') #[mnist, fmnist, cifar10]
 parser.add_argument('--dropout', type=float, default=0.2, help='')
 parser.add_argument('--hidden_dims', type=int, default=128, help='') #768
 
