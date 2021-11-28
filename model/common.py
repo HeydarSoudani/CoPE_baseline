@@ -119,7 +119,7 @@ class Conv_4(nn.Module):
 		
         if args.dataset in ['mnist', 'fmnist']:
             img_channels = 1	  	# 1
-            self.last_layer = 3 	# 3 for 3-layers - 1 for 4-layers
+            self.last_layer = 1 	# 3 for 3-layers - 1 for 4-layers
             self.tensor_shape = (1, 28, 28)
         elif args.dataset in ['cifar10', 'cifar100']:
             img_channels = 3	  	# 3 
