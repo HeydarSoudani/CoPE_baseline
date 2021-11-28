@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import math
+import torch
 import torch.nn as nn
 from torch.nn.functional import relu, avg_pool2d
 
