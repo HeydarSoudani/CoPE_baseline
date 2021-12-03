@@ -128,16 +128,14 @@ if args.dset == 'all' or args.dset == 'fmnist':
 
     X_train, y_train = load_fmnist('./', kind='train') #(60000, 784), (60000,)
     X_test, y_test = load_fmnist('./', kind='t10k')    #(10000, 784), (10000,)
-
+    
     x_tr = torch.from_numpy(X_train)
     y_tr = torch.from_numpy(y_train).long()
     x_te = torch.from_numpy(X_test)
     y_te = torch.from_numpy(y_test).long()
-    f.close()
 
     torch.save((x_tr, y_tr), 'mnist_train.pt')
     torch.save((x_te, y_te), 'mnist_test.pt')
-
 
 
 print("Finished downloads raw data.")
