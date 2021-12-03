@@ -111,8 +111,6 @@ def ResNet18(nclasses, nf=20, bias=True):
     return ResNet(BasicBlock, [2, 2, 2, 2], nclasses, nf, bias)
 
 
-
-
 class Conv_4(nn.Module):
     def __init__(self, args):
         super(Conv_4, self).__init__()

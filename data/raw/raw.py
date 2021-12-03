@@ -10,11 +10,12 @@ import pickle
 import torch
 import os
 import argparse
+import gzip
 
 parser = argparse.ArgumentParser(description='Continuum learning')
 
 # experiment parameters
-parser.add_argument('dset', choices=['all', 'mnist', 'cifar10', 'cifar100'], type=str, default='all',
+parser.add_argument('dset', choices=['all', 'mnist', 'fmnist', 'cifar10', 'cifar100'], type=str, default='all',
                     help='Which dataset to download.')
 args = parser.parse_args()
 
@@ -22,6 +23,31 @@ cifar_path = "cifar-100-python.tar.gz"
 cifar10_path = "cifar-10-python.tar.gz"
 mnist_path = "mnist.npz"
 
+fmnist_train_samples_path = "train-images-idx3-ubyte.gz"
+fmnist_train_labels_path = "train-labels-idx1-ubyte.gz"
+fmnist_test_samples_path = "t10k-images-idx3-ubyte.gz"
+fmnist_test_labels_path = "t10k-labels-idx1-ubyte.gz"
+
+
+def load_fmnist(path, kind='train'):
+
+    """Load MNIST data from `path`"""
+    labels_path = os.path.join(path,
+                                '%s-labels-idx1-ubyte.gz'
+                                % kind)
+    images_path = os.path.join(path,
+                                '%s-images-idx3-ubyte.gz'
+                                % kind)
+
+    with gzip.open(labels_path, 'rb') as lbpath:
+        labels = np.frombuffer(lbpath.read(), dtype=np.uint8,
+                                offset=8)
+
+    with gzip.open(images_path, 'rb') as imgpath:
+        images = np.frombuffer(imgpath.read(), dtype=np.uint8,
+                                offset=16).reshape(len(labels), 784)
+
+    return images, labels
 
 
 def unpickle(file):
@@ -74,7 +100,6 @@ if args.dset == 'all' or args.dset == 'cifar10':
     y_te = y_te[0:1000]
     torch.save((x_tr, y_tr, x_te, y_te), 'cifar10.pt')
 
-
 if args.dset == 'all' or args.dset == 'mnist':
     # URL from: https://github.com/fchollet/keras/blob/master/keras/datasets/mnist.py
     if not os.path.exists(mnist_path):
@@ -89,5 +114,30 @@ if args.dset == 'all' or args.dset == 'mnist':
 
     torch.save((x_tr, y_tr), 'mnist_train.pt')
     torch.save((x_te, y_te), 'mnist_test.pt')
+
+if args.dset == 'all' or args.dset == 'fmnist':
+    # URL from: https://github.com/fchollet/keras/blob/master/keras/datasets/mnist.py
+    if not os.path.exists(fmnist_train_samples_path):
+        subprocess.call("! wget http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz", shell=True)
+    if not os.path.exists(fmnist_train_labels_path):
+        subprocess.call("! wget http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-labels-idx1-ubyte.gz", shell=True)
+    if not os.path.exists(fmnist_test_samples_path):
+        subprocess.call("! wget http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-images-idx3-ubyte.gz", shell=True)
+    if not os.path.exists(fmnist_test_labels_path):
+        subprocess.call("! wget http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-labels-idx1-ubyte.gz", shell=True)
+
+    X_train, y_train = load_fmnist('./', kind='train') #(60000, 784), (60000,)
+    X_test, y_test = load_fmnist('./', kind='t10k')    #(10000, 784), (10000,)
+
+    x_tr = torch.from_numpy(X_train)
+    y_tr = torch.from_numpy(y_train).long()
+    x_te = torch.from_numpy(X_test)
+    y_te = torch.from_numpy(y_test).long()
+    f.close()
+
+    torch.save((x_tr, y_tr), 'mnist_train.pt')
+    torch.save((x_te, y_te), 'mnist_test.pt')
+
+
 
 print("Finished downloads raw data.")
