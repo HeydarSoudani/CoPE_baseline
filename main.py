@@ -58,7 +58,7 @@ parser.add_argument('--model', type=str, default='prototypical.CoPE',
                     help='model to train.')
 parser.add_argument('--n_hiddens', type=int, default=100,
                     help='number of hidden neurons at each layer')
-parser.add_argument('--n_layers', type=int, default=1,
+parser.add_argument('--n_layers', type=int, default=2,
                     help='number of hidden layers')
 parser.add_argument('--shared_head', type=str, default='yes',
                     help='shared head between tasks')
