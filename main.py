@@ -389,14 +389,11 @@ def life_experience(model, continuum, x_te, args):
 
 def get_model(args, n_inputs, n_outputs):
     nl, nh = args.n_layers, args.n_hiddens
-    
-    net = Conv_4(args)
-    # net = MLP([n_inputs] + [nh] * nl + [n_outputs])
-    # if args.is_cifar:
-    #     net = Conv_4(args)
-    #     # net = ResNet18(n_outputs, bias=args.bias)
-    # else:
-    #     net = MLP([n_inputs] + [nh] * nl + [n_outputs])
+    if args.is_cifar:
+        # net = Conv_4(args)
+        net = ResNet18(n_outputs, bias=args.bias)
+    else:
+        net = MLP([n_inputs] + [nh] * nl + [n_outputs])
     return net
 
 
