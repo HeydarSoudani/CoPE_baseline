@@ -11,7 +11,7 @@ import torch
 from metrics.metrics import confusion_matrix
 import metrics.plot as plot
 from metrics.utils import createdirs
-from model.common import MLP, ResNet18, Conv_4
+from model.common import MLP, ResNet18, Conv_4, Resnet50
 from model.prototypical.mem_scheme import MemoryScheme
 from model.prototypical.loss_scheme import PPPloss
 from model.prototypical.p_scheme import PrototypeScheme
