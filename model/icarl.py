@@ -182,9 +182,11 @@ class Net(torch.nn.Module):
                 if self.gpu:
                     prev = prev.cuda()
                 if ee > 0:
+                    print('aa')
                     self.net.eval()
                     prev = self.net(exemplars[:ee]).data.clone().sum(0)
                     self.net.train()
+                    print('bb')
                 cost = (mean_feature.expand(ntr, nd) - (model_output
                                                         + prev.expand(ntr, nd)) / (ee + 1)).norm(2, 1).squeeze()
                 _, indx = cost.sort(0)
