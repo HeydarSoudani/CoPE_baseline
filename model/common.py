@@ -8,7 +8,7 @@ import math
 import torch
 import torch.nn as nn
 from torch.nn.functional import relu, avg_pool2d
-
+import torchvision.models as models
 
 def Xavier(m):
     if m.__class__.__name__ == 'Linear':
@@ -217,6 +217,37 @@ class Conv_4(nn.Module):
         state_dict = torch.load(path)
         self.load_state_dict(state_dict)
 
+
+class Resnet50(nn.Module):
+    def __init__(self, args):
+        super(Resnet50, self).__init__()
+
+        self.pretrained = models.resnet50(pretrained=True)
+        self.fc1 = nn.Linear(1000, args.hidden_dims)
+        self.dp1 = nn.Dropout(args.dropout)
+        self.fc2 = nn.Linear(args.hidden_dims, args.n_classes)
+        self.dp2 = nn.Dropout(args.dropout)
+
+        # init the fc layers
+        self.pretrained.fc.weight.data.normal_(mean=0.0, std=0.01)
+        self.pretrained.fc.bias.data.zero_()
+        self.fc1.apply(Xavier)
+        self.fc2.apply(Xavier)
+
+    def forward(self, x):
+        # x = x.view(x.size(0), -1)
+        x = self.pretrained(x)
+        x = self.dp1(torch.relu(x))
+        features = torch.relu(self.fc1(x))
+        out = self.fc2(self.dp2(features))
+        return out, features
+    
+    def save(self, path):
+        torch.save(self.state_dict(), path)
+
+    def load(self, path):
+        state_dict = torch.load(path)
+        self.load_state_dict(state_dict)
 
 
 

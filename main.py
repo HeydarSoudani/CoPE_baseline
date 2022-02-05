@@ -125,8 +125,8 @@ parser.add_argument('--change_th', type=float, default=0.0,
 # I added
 parser.add_argument('--dataset', type=str, default='mnist', help='') #[mnist, fmnist, cifar10]
 parser.add_argument('--dropout', type=float, default=0.2, help='')
-parser.add_argument('--hidden_dims', type=int, default=128, help='') #768
-
+parser.add_argument('--hidden_dims', type=int, default=160, help='') #768
+parser.add_argument('--n_classes', type=int, default=100, help='') 
 
 # continuum iterator #########################################################
 def load_datasets(args):
@@ -391,7 +391,8 @@ def get_model(args, n_inputs, n_outputs):
     nl, nh = args.n_layers, args.n_hiddens
     if args.is_cifar:
         # net = Conv_4(args)
-        net = ResNet18(n_outputs, bias=args.bias)
+        # net = ResNet18(n_outputs, bias=args.bias)
+        net = Resnet50(args)
     else:
         net = MLP([n_inputs] + [nh] * nl + [n_outputs])
     return net
