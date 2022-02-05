@@ -236,7 +236,7 @@ class Resnet50(nn.Module):
 
     def forward(self, x):
         # x = x.view(x.size(0), -1)
-        # x = x.view(x.size(0), 3, 32, 32)
+        x = x.view(x.size(0), 3, 32, 32)
         print(x.shape)
         x = self.pretrained(x)
         x = self.dp1(torch.relu(x))
