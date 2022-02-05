@@ -223,9 +223,9 @@ class Resnet50(nn.Module):
         super(Resnet50, self).__init__()
 
         self.pretrained = models.resnet50(pretrained=True)
-        self.fc1 = nn.Linear(1000, 160)
+        self.fc1 = nn.Linear(1000, args.n_hiddens)
         self.dp1 = nn.Dropout(args.dropout)
-        self.fc2 = nn.Linear(160, 100)
+        self.fc2 = nn.Linear(args.n_hiddens, args.n_outputs)
         self.dp2 = nn.Dropout(args.dropout)
 
         # init the fc layers
@@ -236,7 +236,8 @@ class Resnet50(nn.Module):
 
     def forward(self, x):
         # x = x.view(x.size(0), -1)
-        x = x.view(x.size(0), 3, 32, 32)
+        # x = x.view(x.size(0), 3, 32, 32)
+        print(x.shape)
         x = self.pretrained(x)
         x = self.dp1(torch.relu(x))
         features = torch.relu(self.fc1(x))
