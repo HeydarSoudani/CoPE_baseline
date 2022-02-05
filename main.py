@@ -56,7 +56,7 @@ parser.add_argument('--uid', default=None, type=str, help='id for the seed runs.
 parser.add_argument('--model', type=str, default='prototypical.CoPE',
                     choices=['prototypical.CoPE', 'finetune', 'reservoir', 'CoPE_CE', 'gem', 'icarl', 'GSSgreedy'],
                     help='model to train.')
-parser.add_argument('--n_hiddens', type=int, default=100,
+parser.add_argument('--n_hiddens', type=int, default=160,
                     help='number of hidden neurons at each layer')
 parser.add_argument('--n_layers', type=int, default=2,
                     help='number of hidden layers')
@@ -125,8 +125,6 @@ parser.add_argument('--change_th', type=float, default=0.0,
 # I added
 parser.add_argument('--dataset', type=str, default='mnist', help='') #[mnist, fmnist, cifar10]
 parser.add_argument('--dropout', type=float, default=0.2, help='')
-parser.add_argument('--hidden_dims', type=int, default=160, help='') #768
-parser.add_argument('--n_classes', type=int, default=100, help='') 
 
 # continuum iterator #########################################################
 def load_datasets(args):
@@ -392,6 +390,7 @@ def get_model(args, n_inputs, n_outputs):
     if args.is_cifar:
         # net = Conv_4(args)
         # net = ResNet18(n_outputs, bias=args.bias)
+        args.n_classes = n_outputs
         net = Resnet50(args)
     else:
         net = MLP([n_inputs] + [nh] * nl + [n_outputs])
