@@ -226,6 +226,9 @@ class Continuum:
                 i += 1
             self.current += i
             j = torch.LongTensor(j)
+
+            print(self.data[ti][1][j].shape)
+
             return self.data[ti][1][j], ti, self.data[ti][2][j]  # (x, t, y)
 
 
