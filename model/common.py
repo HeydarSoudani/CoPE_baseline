@@ -225,7 +225,7 @@ class Resnet50(nn.Module):
         self.pretrained = models.resnet50(pretrained=True)
         self.fc1 = nn.Linear(1000, args.n_hiddens)
         self.dp1 = nn.Dropout(args.dropout)
-        self.fc2 = nn.Linear(args.n_hiddens, args.n_outputs)
+        self.fc2 = nn.Linear(160, 100)
         self.dp2 = nn.Dropout(args.dropout)
 
         # init the fc layers
