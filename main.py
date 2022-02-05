@@ -424,7 +424,8 @@ def main(overwrite_args=None):
 
     print("Init args={}".format(args))
     stat_files = []
-    seeds = [args.seed] if args.seed is not None else list(range(args.n_seeds))
+    # seeds = [args.seed] if args.seed is not None else list(range(args.n_seeds))
+    seeds = [1, 5, 12, 39]
     for seed in seeds:
         # initialize seeds
         print("STARTING SEED {}/{}".format(seed, args.n_seeds - 1))
