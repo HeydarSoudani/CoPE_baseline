@@ -368,7 +368,7 @@ def life_experience(model, continuum, x_te, args):
         model.log = False
 
         # -- i added ---------------
-        print(i)
+        # print(i)
 
     # Append final accs (after log_every)
     tot_res_seq, tot_avg_acc, task_res_seq, task_avg_acc = eval_tasks(model, x_te, args.tasks_to_preserve, args)
