@@ -278,7 +278,7 @@ def _eval_tasks(model, tasks, current_task, args):
     torch.save((model.state_dict(), task_result_seq, task_avg_acc), model.fname + '.pt')
 
     # f.write("%s\n" % total_result_seq.detach().cpu().numpy())
-    f.write(total_result_seq.detach().cpu().numpy())
+    f.write(torch.tensor(total_result_seq).detach().cpu().numpy())
 
     return total_result_seq, total_avg_acc, task_result_seq, task_avg_acc
 
