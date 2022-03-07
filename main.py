@@ -277,7 +277,8 @@ def _eval_tasks(model, tasks, current_task, args):
     print("EVAL (train TASK {}/test total) ===> {}".format(current_task, total_result_seq))
     torch.save((model.state_dict(), task_result_seq, task_avg_acc), model.fname + '.pt')
 
-    f.write("%s\n" % total_result_seq)
+    # f.write("%s\n" % total_result_seq.detach().cpu().numpy())
+    f.write(total_result_seq.detach().cpu().numpy())
 
     return total_result_seq, total_avg_acc, task_result_seq, task_avg_acc
 
@@ -541,6 +542,8 @@ def stat_summarize(stat_files):
 
 if __name__ == "__main__":
     f = open('output.txt', 'w')
+    f = open("csv_file.csv", "w")
+    # csv_file.write("a,1\nb,2\nc,3")
     
     main()
 
