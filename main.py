@@ -432,10 +432,13 @@ def main(overwrite_args=None):
 
     print("Init args={}".format(args))
     stat_files = []
-    seeds = [args.seed] if args.seed is not None else list(range(args.n_seeds))
-    # seeds = [1, 5, 12, 39, 50]
+    time_list = []
+    # seeds = [args.seed] if args.seed is not None else list(range(args.n_seeds))
+    seeds = [1, 5, 12]
     print(seeds)
     for seed in seeds:
+        start_time = time.time()
+        
         # initialize seeds
         print("STARTING SEED {}/{}".format(seed, args.n_seeds - 1))
         torch.backends.cudnn.deterministic = False
@@ -519,12 +522,16 @@ def main(overwrite_args=None):
         one_liner += ' '.join(["%.3f" % stat for stat in stats])
         print(model.fname + ': ' + one_liner + ' # ' + str(spent_time))
 
+        ## calc. time
+        time_list.append(time.time() - start_time) 
+
         # save all results in binary file
         torch.save((*res.get_all(), model.state_dict(), stats, one_liner, args), model.fname + '.pt')
         stat_files.append(model.fname + '.pt')
 
     mean, std = stat_summarize(stat_files)
     print("FINISHED SCRIPT")
+    print('run time is: {:.2f} ± {:.2f}'.format(np.mean(time_list), np.std(time_list)))
 
 
 def stat_summarize(stat_files):
