@@ -437,6 +437,7 @@ def main(overwrite_args=None):
     seeds = [1, 5, 12]
     print(seeds)
     for seed in seeds:
+        f.write("Seed: %s\n" % str(seed))
         start_time = time.time()
         
         # initialize seeds
@@ -551,9 +552,5 @@ def stat_summarize(stat_files):
 
 if __name__ == "__main__":
     f = open('output.txt', 'w')
-    # f = open("csv_file.csv", "w")
-    # csv_file.write("a,1\nb,2\nc,3")
-    
     main()
-
     f.close()
