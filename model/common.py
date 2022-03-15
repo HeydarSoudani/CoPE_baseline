@@ -174,10 +174,10 @@ class Conv_4(nn.Module):
             nn.Dropout(args.dropout)
         )
 
-        self.ip1 = nn.Linear(self.filters_length*self.last_layer*self.last_layer, args.hidden_dims)
+        self.ip1 = nn.Linear(self.filters_length*self.last_layer*self.last_layer, args.n_hiddens)
         self.preluip1 = nn.PReLU()
         self.dropoutip1 = nn.Dropout(args.dropout)
-        self.classifier = nn.Linear(args.hidden_dims, 10)
+        self.classifier = nn.Linear(args.n_hiddens, 10)
 
     def forward(self, x):
         x = x.reshape(x.shape[0], *self.tensor_shape)
